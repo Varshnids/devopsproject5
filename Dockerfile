@@ -1,15 +1,20 @@
-# Use an official Nginx image as a base image
-FROM nginx:latest
+# Use official Node.js LTS image as base
+FROM node:18
 
-# Set the working directory
-WORKDIR /usr/share/nginx/html
+# Set working directory inside container
+WORKDIR /app
 
-# Copy all static files (HTML, CSS, JS, images, fonts, etc.)
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy rest of the project files
 COPY . .
 
-# Expose port 80 for the web server
-EXPOSE 80
+# Expose port (usually 3000 or 8080 for Node.js apps)
+EXPOSE 3000
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
-
+# Start the app
+CMD ["npm", "start"]
